@@ -37,5 +37,38 @@ $('#retry').onclick=()=>{answers=[];index=0;appearance={};$('#appearance-form').
 function roundedRect(ctx,x,y,w,h,r){ctx.beginPath();ctx.roundRect(x,y,w,h,r)}
 $('#save-card').onclick=async()=>{const btn=$('#save-card');btn.disabled=true;try{const canvas=document.createElement('canvas');canvas.width=1200;canvas.height=1600;const c=canvas.getContext('2d');const g=c.createLinearGradient(0,0,1200,1600);g.addColorStop(0,'#fff');g.addColorStop(.55,'#f8f4fc');g.addColorStop(1,'#fff7fb');c.fillStyle=g;c.fillRect(0,0,1200,1600);c.strokeStyle='#c8bbd7';c.lineWidth=3;c.strokeRect(38,38,1124,1524);c.strokeRect(55,55,1090,1490);c.textAlign='center';const logo=new Image();logo.src='assets/logo.jpeg';await new Promise((resolve,reject)=>{logo.onload=resolve;logo.onerror=reject});c.drawImage(logo,420,35,360,360);c.fillStyle='#a296b7';c.font='38px Georgia';c.fillText('MAGICAL PROFILE',600,425);c.fillStyle=current.color;c.font='54px serif';c.fillText(current.short,600,535);c.fillStyle='#9589a9';c.font='28px Georgia';c.fillText(current.attribute,600,590);c.fillStyle='#706780';c.font='30px sans-serif';wrapText(c,current.personality,600,680,920,52);c.fillStyle='#bba8ce';c.font='38px serif';c.fillText('✧',600,880);let y=950;const sections=[['STRENGTH',current.strength],['INNER SELF',current.inner],['RECOMMENDED MAGIC',current.name]];for(const [label,txt] of sections){c.fillStyle='#a296b7';c.font='28px Georgia';c.fillText(label,600,y);y+=52;c.fillStyle='#706780';c.font='27px sans-serif';y=wrapText(c,txt,600,y,920,48)+34;}c.fillStyle='#a296b7';c.font='27px Georgia';c.fillText(diagnosisDate,600,1500);const a=document.createElement('a');a.download=`MysticSpells_${current.short.replaceAll(' ','_')}_${diagnosisDate.replaceAll('.','')}.png`;a.href=canvas.toDataURL('image/png');a.click();$('#save-status').textContent='画像を保存しました。';}catch(e){$('#save-status').textContent='保存できませんでした。ブラウザの設定をご確認ください。'}finally{btn.disabled=false}};
 function wrapText(ctx,text,x,y,maxWidth,lineHeight){const words=Array.from(text);let line='';for(const ch of words){const test=line+ch;if(ctx.measureText(test).width>maxWidth&&line){ctx.fillText(line,x,y);line=ch;y+=lineHeight}else line=test}if(line)ctx.fillText(line,x,y);return y+lineHeight}
-function buildPrompt(){return `オリジナルのファンタジー世界「Mystic Spells」に登場する、魔法使いの肖像画を描いてください。\n\n【キャラクター設定】\n・${appearance.silhouette}\n・${appearance.age}\n・${appearance.skin}\n・${appearance.hair}\n・髪型、髪色、瞳の色はキャラクターの雰囲気に合わせて自由にデザインする\n\n【魔法タイプ】\n${current.short}（${current.theme}）\n水、月光、星、透明感をモチーフにする。衣装は白・淡いアクアブルー・シルバーを基調とし、銀細工や小さな水晶を控えめに取り入れる。\n\n【絵柄】\nアニメとリアルの中間に位置する、繊細で美しいファンタジーイラスト。美しいアニメ調の瞳は大きくしすぎず、鼻筋・輪郭・骨格・顔の陰影には自然な立体感を持たせる。淡く優しいパステル調、柔らかな透明感のある光。\n\n【構図】\n縦長3:4。頭部から胸元までのバストアップ。顔は中央、正面またはわずかに斜め。手や腕は描かない。\n\n【背景】\n白を基調に、淡いピンクとラベンダーをわずかに含む柔らかなグラデーション。頭の後ろに薄く光る繊細な魔法陣、水の波紋と小さな光の粒子を控えめに配置。\n\n【文字】\n画像内に「Mystic Spells」という文字を必ず一箇所だけ配置する。それ以外の文字・数字・ロゴ・署名・透かしは一切入れない。\n\n装飾を過剰にせず、顔と衣装の美しさを優先してください。髪は自然な束感を大切にし、レースや刺繍、宝石は必要最小限にしてください。`;}
+function buildPrompt(){
+ const typeArt={
+  aqualis:{motif:'水、月光、星、透明感',palette:'白・淡いアクアブルー・シルバー',details:'水の流れや波紋を思わせる柔らかな意匠、透明な水晶や小さな雫の装飾'},
+  rubellis:{motif:'炎、情熱、薔薇、宝石',palette:'白・深みを抑えたルビーレッド・シルバー',details:'薔薇や赤い宝石、細いリボン、炎のゆらめきを思わせる意匠'},
+  amethyne:{motif:'アメジスト、魔法陣、星、神秘、知性',palette:'白・淡いアメジストパープル・シルバー',details:'アメジストの結晶、繊細な魔法陣、幾何学的で知的な装飾'}
+ };
+ const art=typeArt[current.key]||typeArt.aqualis;
+ return `オリジナルのファンタジー世界「Mystic Spells」に登場する、魔法使いの肖像画を描いてください。
+
+【キャラクター設定】
+・${appearance.silhouette}
+・${appearance.age}
+・${appearance.skin}
+・${appearance.hair}
+・髪型、髪色、瞳の色はキャラクターの雰囲気に合わせて自由にデザインする
+
+【魔法タイプ】
+${current.short}（${current.theme}）
+このタイプの象徴モチーフは「${art.motif}」。衣装は${art.palette}を基調とし、${art.details}を控えめに取り入れる。タイプ固有のモチーフと配色を明確に反映し、他のタイプの象徴モチーフを混ぜない。
+
+【絵柄】
+アニメとリアルの中間に位置する、繊細で美しいファンタジーイラスト。美しいアニメ調の瞳は大きくしすぎず、鼻筋・輪郭・骨格・顔の陰影には自然な立体感を持たせる。淡く優しいパステル調、柔らかな透明感のある光。
+
+【構図】
+縦長3:4。頭部から胸元までのバストアップ。顔は中央、正面またはわずかに斜め。手や腕は描かない。
+
+【背景】
+全タイプ共通で、白を基調に淡いピンクとラベンダーをわずかに含む柔らかなグラデーション。頭の後ろに薄く光る繊細な魔法陣を配置し、${art.motif}を連想させる小さな光や粒子を控えめに散らす。背景色は共通のまま、タイプの個性は衣装とモチーフで表現する。
+
+【文字】
+画像内に「Mystic Spells」という文字を必ず一箇所だけ配置する。それ以外の文字・数字・ロゴ・署名・透かしは一切入れない。
+
+装飾を過剰にせず、顔と衣装の美しさを優先してください。髪は自然な束感を大切にし、レースや刺繍、宝石は必要最小限にしてください。`;
+}
 $('#copy-prompt').onclick=async()=>{try{await navigator.clipboard.writeText(buildPrompt());$('#copy-status').textContent='コピーしました！ChatGPTに貼り付けてね。'}catch(e){const t=document.createElement('textarea');t.value=buildPrompt();document.body.append(t);t.select();document.execCommand('copy');t.remove();$('#copy-status').textContent='コピーしました！ChatGPTに貼り付けてね。'}};
