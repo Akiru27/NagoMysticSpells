@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f8f4ff"><meta name="description" content="Mystic Spells｜あなたに似合う魔法診断">
+<title>Mystic Spells｜あなたに似合う魔法診断</title>
+<link rel="icon" href="assets/logo.jpeg" type="image/jpeg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Noto+Serif+JP:wght@400;500;600&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="loading" class="loading hidden"><div class="loader-orbit"><i></i><i></i><i></i></div><p>読み込み中……</p></div>
+<main id="app">
+<section id="gate" class="screen gate-screen">
+  <div class="door-frame"><div class="door-glow"></div><img class="brand-logo" src="assets/logo.jpeg" alt="Mystic Spells"></div>
+  <h1 class="gate-question">Mystic Spellsの番地は？</h1>
+  <form id="gate-form" class="gate-form"><input id="gate-code" inputmode="numeric" autocomplete="one-time-code" maxlength="4" pattern="[0-9]{4}" aria-label="4桁の数字" placeholder="••••" required><button class="glass-button" type="submit">扉を開く</button></form>
+  <p id="gate-error" class="error" aria-live="polite"></p>
+</section>
+<section id="intro" class="screen hidden">
+  <div class="intro-wrap"><img class="intro-logo" src="assets/logo.jpeg" alt="Mystic Spells">
+  <p class="eyebrow">A MAGICAL PERSONALITY DIAGNOSIS</p>
+  <h1>あなたの心には、<br>どんな魔法が眠っているのでしょう。</h1>
+  <p class="intro-copy">15の問いを通して、あなたに似合う魔法を見つけましょう。</p>
+  <button id="start" class="glass-button primary">魔法診断を始める <span>✧</span></button></div>
+</section>
+<section id="appearance" class="screen hidden">
+ <div class="panel appearance-panel"><p class="eyebrow">YOUR APPEARANCE</p><h1>あなたが魔法使いだったら？</h1><p class="subcopy">肖像画に反映する姿を選んでください。</p>
+ <form id="appearance-form">
+  <div class="field"><h2>シルエット</h2><div class="choices"><label><input type="radio" name="silhouette" value="女性的なシルエット"><span>女性的</span></label><label><input type="radio" name="silhouette" value="男性的なシルエット"><span>男性的</span></label><label><input type="radio" name="silhouette" value="中性的なシルエット"><span>中性的</span></label></div></div>
+  <div class="field"><h2>年齢</h2><div class="choices"><label><input type="radio" name="age" value="幼い印象の姿"><span>幼い姿</span></label><label><input type="radio" name="age" value="成人の姿"><span>成人の姿</span></label><label><input type="radio" name="age" value="壮年の姿"><span>壮年の姿</span></label></div></div>
+  <div class="field"><h2>肌の色</h2><div class="choices wrap"><label><input type="radio" name="skin" value="色白の肌"><span>色白</span></label><label><input type="radio" name="skin" value="明るめの標準的な肌色"><span>明るめ</span></label><label><input type="radio" name="skin" value="健康的な小麦色の肌"><span>小麦色</span></label><label><input type="radio" name="skin" value="褐色の肌"><span>褐色</span></label></div></div>
+  <div class="field"><h2>髪の長さ</h2><div class="choices"><label><input type="radio" name="hair" value="ショートヘア"><span>ショート</span></label><label><input type="radio" name="hair" value="ボブヘア"><span>ボブ</span></label><label><input type="radio" name="hair" value="ミディアムヘア"><span>ミディアム</span></label><label><input type="radio" name="hair" value="ロングヘア"><span>ロング</span></label></div></div>
+  <p id="appearance-error" class="error"></p><button class="glass-button primary" type="submit">この姿で診断する</button>
+ </form></div>
+</section>
+<section id="quiz" class="screen hidden"><div class="quiz-shell"><div class="progress-head"><span id="progress-label">QUESTION 01 / 15</span><span class="progress-spark">✧</span></div><div class="progress-track"><div id="progress-fill"></div></div><div class="question-area"><p class="eyebrow">A QUESTION FOR YOUR HEART</p><h1 id="question-text"></h1><div id="answer-list" class="answer-list"></div><button id="back" class="text-button" type="button">← 戻る</button></div></div></section>
+<section id="reveal" class="screen hidden"><div class="reveal-wrap"><div class="reveal-circle"><span class="crest c1">✧</span><span class="crest c2">◇</span><span class="crest c3">☾</span><div class="reveal-core">✦</div></div><p>あなたの心に眠る魔法を探しています……</p></div></section>
+<section id="result" class="screen hidden"><div class="result-wrap"><p class="eyebrow">YOUR MAGICAL TYPE</p><p id="result-date" class="result-date"></p><h1 id="result-name" class="result-name"></h1><p id="result-theme" class="result-theme"></p>
+ <div class="product-feature"><img id="result-product-image" src="" alt="おすすめ商品"><div class="product-copy"><p class="eyebrow">RECOMMENDED MAGIC</p><h2 id="result-product-name"></h2><p id="result-product-description"></p></div></div>
+ <div class="profile-text"><h2>あなたの魔法タイプ</h2><div class="trait"><h3>PERSONALITY</h3><p id="personality"></p></div><div class="trait"><h3>INNER SELF</h3><p id="inner"></p></div><div class="trait"><h3>STRENGTH</h3><p id="strength"></p></div><div class="trait"><h3>WEAKNESS</h3><p id="weakness"></p></div></div>
+ <div class="girl-message"><p class="eyebrow">A MESSAGE FOR YOU</p><p id="message"></p></div>
+ <section class="profile-card-section"><p class="eyebrow">MAGICAL PROFILE</p><div id="profile-card" class="profile-card"><div class="card-inner"><img src="assets/logo.jpeg" alt="Mystic Spells" class="card-logo"><p class="card-title">MAGICAL PROFILE</p><p id="card-type" class="card-type"></p><p id="card-attribute" class="card-attribute"></p><p id="card-personality" class="card-body"></p><div class="card-divider">✧</div><p class="card-label">STRENGTH</p><p id="card-strength" class="card-body"></p><p class="card-label">INNER SELF</p><p id="card-inner" class="card-body"></p><p class="card-label">RECOMMENDED MAGIC</p><p id="card-product" class="card-product"></p><p id="card-date" class="card-date"></p></div></div><button id="save-card" class="glass-button">画像を保存する</button><p id="save-status" class="subcopy" aria-live="polite"></p></section>
+ <section class="portrait-section"><h2>もし、あなたが魔法使いだったら……？</h2><p>あなたの魔法適性をもとに、あなただけの魔法使いの姿を描いてみませんか？ 髪型や肌の色、なりたい姿を反映した、あなただけの肖像画を作ることができます。</p><div class="sample-frame"><img src="assets/sample-portrait.jpeg" alt="肖像画サンプル"><span>SAMPLE</span></div><button id="copy-prompt" class="glass-button primary">肖像画のプロンプトをコピー</button><p id="copy-status" class="subcopy" aria-live="polite"></p><ol class="howto"><li>ChatGPTを開く</li><li>新しいチャットにプロンプトを貼り付ける</li><li>送信して肖像画を生成する</li></ol><p class="disclaimer">※肖像画は外部AIサービスを利用して生成します。各サービスの利用規約・利用制限・料金等をご確認のうえ、ご自身の判断と責任でご利用ください。</p></section>
+ <div class="result-actions"><button id="retry" class="glass-button">もう一度診断する</button><button id="home" class="text-button">トップページへ戻る</button></div>
+ </div></section>
+</main>
+<div id="confirm-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="confirm-title"><div class="modal-box"><p id="confirm-title">この魔法の記録を閉じて、最初の場所へ戻りますか？</p><div><button id="stay" class="glass-button">診断結果に戻る</button><button id="go-home" class="glass-button primary">トップページへ戻る</button></div></div></div>
+<script src="app.js"></script>
+</body></html>
